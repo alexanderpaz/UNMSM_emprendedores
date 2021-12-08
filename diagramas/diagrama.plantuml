@@ -1,0 +1,218 @@
+@startuml
+left to right direction
+
+' ============
+' = PÁGINA 1 =
+' ============
+
+' == DEFINICIÓN DE ACTORES ==
+
+:Usuario: <|-- :Admin:
+:Usuario: <|-- :Participante:
+:Usuario: <|-- :Académico:
+:Usuario: <|-- :Mentor:
+:Académico: <|-- :Tutor:
+:Académico: <|-- :Facilitador:
+
+' ============
+' = PÁGINA 2 =
+' ============
+
+newpage
+left to right direction
+
+' = DEFINICIÓN DE CASOS DE USO Y RELACIONES =
+
+package Sesión {
+   usecase "Iniciar Sesión" as Sesión_Iniciar
+   usecase "Cerrar Sesión" as Sesión_Cerrar
+   usecase "Mostrar Dashboard" as Sesión_Dashboard
+}
+
+Usuario --> Sesión_Iniciar
+Usuario --> Sesión_Cerrar
+(Sesión_Iniciar) ..> (Sesión_Dashboard) : <<include>>
+
+note right of Sesión_Dashboard: Pre Incubación o Incubación\nsegún corresponda al usuario
+
+' --------
+
+package Mantenimiento {
+   usecase "CRUD Estudiante" as UCCRUDE
+   usecase "CRUD Programa" as UCCRUDP
+   usecase "CRUD Actividad"  as UCCRUDACT
+   usecase "CRUD Recurso"  as UCCRUDR
+   usecase "CRUD Académico"  as UCCRUDACA
+}
+
+Admin --> UCCRUDACT
+Admin --> UCCRUDE
+Admin --> UCCRUDP
+Admin --> UCCRUDACA
+Admin --> UCCRUDR
+
+' ============
+' = PÁGINA 3 =
+' ============
+
+newpage
+left to right direction
+
+package "Administración del Programa" {
+   usecase "Inscripción\nAlumnos"  as UC_Programa_Insc
+   usecase "Registro\nAcadémicos"  as UC_Programa_Acad
+   usecase "Generar\nClase Patrón"  as UC_Programa_CPatron
+   usecase "Replicar\nClases"  as UC_Programa_RClases
+   usecase "Envío Accesos"  as UC_Programa_EAccesos
+   usecase "Realizar Backup\nen repositorio" as UC_Backup
+
+   (UC_Programa_Insc) <|-- (Inscribir a Pre Incubación)
+   (UC_Programa_Insc) <|-- (Inscribir a Incubación)
+}
+
+Admin --> UC_Programa_Insc
+Admin --> UC_Programa_Acad
+Admin --> UC_Programa_CPatron
+Admin --> UC_Programa_RClases
+Admin --> UC_Programa_EAccesos
+Admin --> UC_Backup
+
+' ============
+' = PÁGINA 4 =
+' ============
+
+newpage
+left to right direction
+
+package "Desarrollar Programa" {
+   usecase "Desarrollar Taller" as Prog_Taller
+   usecase "Desarrollar Mentoria" as Prog_Mentoria
+   usecase "Desarrollar Presentación Final" as Prog_PF
+   usecase "Consultar calendario\nde Actvidades" as Prog_Calendario
+   usecase "Utilizar mensajeria" as Prog_Mensajeria
+   usecase "Consultar calificaciones" as Prog_Calificaciones
+   usecase "Acceder a herramientas externas" as Prog_Herramientas
+
+   (Prog_PF) <|-- (Desarrollar Demo Day)
+   (Prog_PF) <|-- (Desarrollar Rueda de Negocios)
+
+   note right of Prog_Herramientas
+     Whatsapp, Discord, Telegram, Slack, etc
+   end note
+
+   note right of Prog_Mensajeria
+     Mensajería interna del LMS
+   end note
+}
+
+Participante --> Prog_Taller
+Participante --> Prog_Mentoria
+Participante --> Prog_PF
+Participante --> Prog_Calendario
+Participante --> Prog_Mensajeria
+Participante --> Prog_Calificaciones
+Participante --> Prog_Herramientas
+
+' ============
+' = PÁGINA 5 =
+' ============
+
+newpage
+left to right direction
+
+package "Talleres" {
+   usecase "Desarrollar Taller" as Prog_Taller
+   usecase "Visualizar avance taller" as Taller_Visualizar
+   usecase "Ingresar a videoconferencia" as Taller_Videoconferencia
+   usecase "Consumir recurso" as Taller_Recurso
+   usecase "Consumir actividad" as Taller_Actividad
+   usecase "Consumir herramienta" as Taller_Herramienta
+
+   (Prog_Taller) <.. (Taller_Visualizar) : <<extends>>
+   (Prog_Taller) <.. (Taller_Videoconferencia) : <<extends>>
+   (Prog_Taller) <.. (Taller_Recurso) : <<extends>>
+   (Prog_Taller) <.. (Taller_Actividad) : <<extends>>
+   (Prog_Taller) <.. (Taller_Herramienta) : <<extends>>
+
+   note right of Taller_Actividad
+    Las actividades requieren interacción del Participante
+    por ejemplo, un foro, una tarea, un cuestionario, una encuesta
+   end note
+
+   note right of Taller_Recurso
+    Los recursos no requieren interacción del Participante
+    por ejemplo, un archivo de Office (Excel, Word, Powerpoint),
+    un enlace a un archivo externo o un URL
+   end note
+}
+
+Participante --> Prog_Taller
+
+' ============
+' = PÁGINA 6 =
+' ============
+
+newpage
+left to right direction
+
+package "Mentorias" {
+   usecase "Desarrollar Mentoria" as Prog_Mentoria
+   usecase "Visualizar avance mentoria" as Mentoria_Visualizar
+   usecase "Ingresar a videoconferencia mentoria" as Mentoria_Videoconferencia
+   usecase "Consumir recurso mentoria" as Mentoria_Recurso
+   usecase "Participar de foro mentoria" as Mentoria_Foro
+
+   (Prog_Mentoria) <.. (Mentoria_Visualizar) : <<extends>>
+   (Prog_Mentoria) <.. (Mentoria_Videoconferencia) : <<extends>>
+   (Prog_Mentoria) <.. (Mentoria_Recurso) : <<extends>>
+   (Prog_Mentoria) <.. (Mentoria_Foro) : <<extends>>
+
+   note right of Mentoria_Foro
+    En el foro el Participante tiene
+    el feedback de los mentores,
+    hace preguntas y levante observaciones
+   end note
+}
+
+Participante --> Prog_Mentoria
+
+
+' ============
+' = PÁGINA 7 =
+' ============
+
+newpage
+left to right direction
+
+package "Presentación Final" as PF {
+   usecase "Desarrollar Presentación\nFinal" as PF_DesarrollarPF
+   usecase "Consultar información\ndescriptiva" as PF_Info
+   usecase "Ingresar a videoconferencia" as PF_Videoconferencia
+   usecase "Visualizar actividades" as PF_Actividades
+   usecase "Consultar lista de\nequipos finalistas" as PF_Equipos
+   usecase "Consultar ranking final" as PF_Ranking
+   usecase "Inscribir equipo en\nPresentación Final" as PF_Inscribir
+   usecase "Registrar ranking\nde equipos" as PF_RegistrarRanking
+
+   (PF_DesarrollarPF) <... (PF_Info) : <<extends>>
+   (PF_DesarrollarPF) <... (PF_Videoconferencia) : <<extends>>
+   (PF_DesarrollarPF) <... (PF_Actividades) : <<extends>>
+   (PF_DesarrollarPF) <... (PF_Equipos) : <<extends>>
+   (PF_DesarrollarPF) <... (PF_Ranking) : <<extends>>
+
+   usecase "Desarrollar Demo Day" as PF_DemoDay
+   usecase "Desarrollar Rueda\nde Negocios" as PF_Rueda
+
+   (PF_DesarrollarPF) <|-- (PF_DemoDay)
+   (PF_DesarrollarPF) <|-- (PF_Rueda)
+
+   note right of PF_DemoDay : Pre Incubación
+   note right of PF_Rueda : Incubación
+
+}
+
+Participante --> PF_DesarrollarPF
+Académico --> PF_Inscribir
+Académico --> PF_RegistrarRanking
+
+@enduml
