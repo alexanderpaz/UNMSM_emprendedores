@@ -29,9 +29,10 @@ package Sesión {
    usecase "Mostrar Dashboard" as Sesión_Dashboard
 }
 
-Usuario --> Sesión_Iniciar
-Usuario --> Sesión_Cerrar
-(Sesión_Iniciar) ..> (Sesión_Dashboard) : <<include>>
+Usuario -> Sesión_Iniciar
+Usuario -> Sesión_Cerrar
+Usuario --> Sesión_Dashboard
+(Sesión_Iniciar) .> (Sesión_Dashboard) : <<include>>
 
 note right of Sesión_Dashboard: Pre Incubación o Incubación\nsegún corresponda al usuario
 
