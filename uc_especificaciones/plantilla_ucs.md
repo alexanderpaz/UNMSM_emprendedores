@@ -1,14 +1,16 @@
 # Descripción
-Descripción del CU
+
 
 # Actores
-* Usuario
+* Participante
 
 # Pre-condiciones
 
+
 # Basic flow
-1.	El actor ...
-2.	El sistema ...
+1.	El Participante....
+2.  El Sistema...
+3.  
 
 # Flujos Alternos
 ## Flujo Alterno 1: Usuario con credenciales erróneas

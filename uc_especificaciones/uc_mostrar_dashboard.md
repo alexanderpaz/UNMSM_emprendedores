@@ -22,6 +22,5 @@ El Usuario debe estar autenticado, autorizado y matriculado en un programa.
 2.	Se mantiene la sesión del usuario en el sistema
 # Requerimientos No Funcionales
 1.	El dashboard podrá ser consumido desde los siguientes dispositivos:
-    a.	Web browser
-    b.	Tablet
-    c.	Teléfono
+    a.	Web browser (Chrome, Edge, Opera, Brave)
+    b.	Dispositivos móviles con sistema operativo Android o iOS
